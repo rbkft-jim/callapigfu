@@ -2,6 +2,9 @@ name: Test Debugger Action
 on: 
   pull_request:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
   oidc_debug_test:
