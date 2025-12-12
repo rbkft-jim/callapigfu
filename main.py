@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route("/test")
 def main():
-    return "Hello World de Gfunctions v1"
+    return "Hello World de Gfunctions v2"
 
 #Add a comment
 if __name__ == "__main__":
