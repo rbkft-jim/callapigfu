@@ -17,7 +17,7 @@ jobs:
           # mais il est bon de la définir correctement pour la démonstration)
           AUDIENCE="https://iam.googleapis.com/projects/793834297925/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
 
-
+          echo $AUDIENCE
           echo "Récupération du jeton OIDC de GitHub..."
           
           # 2. Récupération du JWT brut
