@@ -1,20 +1,23 @@
-name: Test Debugger Action
-on: 
-  pull_request:
-  workflow_dispatch:
+name: Debug OIDC Claims
+on:
   push:
     branches:
-      - main
-
+    - main
 jobs:
-  oidc_debug_test:
+  debug_claims:
+    # 1. Ajoutez la permission obligatoire
     permissions:
-      contents: read
       id-token: write
+      contents: read # Facultatif, mais souvent requis
     runs-on: ubuntu-latest
-    name: A test of the oidc debugger
     steps:
-      - name: Debug OIDC Claims
-        uses: github/actions-oidc-debugger@main
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Utilisez l'action de débogage
+      - name: Afficher les revendications OIDC
+        uses: actions/github-action-oidc-debugger@v1
         with:
-          audience: '${{ github.server_url }}/${{ github.repository_owner }}'
+        # Définissez l'audience (aud) que vous utiliserez dans votre configuration GCP.
+        # Si non spécifiée, l'audience par défaut de GitHub est utilisée.
+          audience: 'https://iam.googleapis.com/projects/793834297925/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
