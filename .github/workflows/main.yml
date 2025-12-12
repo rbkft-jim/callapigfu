@@ -4,36 +4,18 @@ on:
     branches:
     - main
 jobs:
-  debug_claims:
-    # 1. Ajoutez la permission obligatoire
+  build:
+    # Allow the job to fetch a GitHub ID token
     permissions:
       id-token: write
-      contents: read # Facultatif, mais souvent requis
+      contents: read
     runs-on: ubuntu-latest
     steps:
-      - name: Décoder manuellement le jeton OIDC
-        run: |
-          # 1. Définissez l'audience (elle n'a pas besoin d'être l'URL GCP pour le décodage, 
-          # mais il est bon de la définir correctement pour la démonstration)
-          AUDIENCE="https://iam.googleapis.com/projects/793834297925/locations/global/workloadIdentityPools/my-pool/providers/my-provider"
-
-          echo $AUDIENCE
-          echo "Récupération du jeton OIDC de GitHub..."
-          
-          # 2. Récupération du JWT brut
-          ID_TOKEN=$(curl -s -X POST \
-            -H "Authorization: Bearer ${{ secrets.ACTIONS_ID_TOKEN_REQUEST_TOKEN }}" \
-            -H "Accept: application/json" \
-            "${{ secrets.ACTIONS_ID_TOKEN_REQUEST_URL }}&audience=${AUDIENCE}" | jq -r .value)
-
-          if [ -z "$ID_TOKEN" ]; then
-            echo "Erreur: Impossible de récupérer le jeton OIDC."
-            exit 1
-          fi
-
-          # 3. Décodage et affichage de la partie "claims" (le corps du JWT)
-          echo "JWT Claims décodées (Corps du jeton):"
-          
-          # La partie claims est la 2ème section du JWT (séparée par des points)
-          # Utilisation de base64 -d pour décoder, puis jq pour formater en JSON lisible
-          echo "$ID_TOKEN" | awk -F. '{print $2}' | base64 -d | jq .
+      - uses: actions/checkout@v3
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          create_credentials_file: true
+          workload_identity_provider: 'projects/793834297925/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: '793834297925-compute@developer.gserviceaccount.com'
