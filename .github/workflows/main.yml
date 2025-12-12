@@ -14,10 +14,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 2. Utilisez l'action de débogage
-      - name: Afficher les revendications OIDC
-        uses: actions/github-action-oidc-debugger@v1
+      # 2. Utilisation de l'action de remplacement
+      - name: Afficher les revendications OIDC (Debug communautaire)
+        uses: mike-engel/oidc-debugger@v1 
         with:
-        # Définissez l'audience (aud) que vous utiliserez dans votre configuration GCP.
-        # Si non spécifiée, l'audience par défaut de GitHub est utilisée.
+          # L'audience doit correspondre à votre fournisseur GCP.
+          # Par exemple : 'https://iam.googleapis.com/projects/1234567890/locations/global/workloadIdentityPools/github-pool/providers/github-provider'
           audience: 'https://iam.googleapis.com/projects/793834297925/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
