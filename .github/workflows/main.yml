@@ -18,4 +18,4 @@ jobs:
         with:
           create_credentials_file: true
           workload_identity_provider: 'projects/793834297925/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-          service_account: '793834297925-compute@developer.gserviceaccount.com'
+          service_account: 'github-actions@project-a7b5d84c-a964-4b71-9fc.iam.gserviceaccount.com'
