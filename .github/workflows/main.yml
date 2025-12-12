@@ -20,9 +20,10 @@ jobs:
           workload_identity_provider: 'projects/793834297925/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
           service_account: 'github-actions@project-a7b5d84c-a964-4b71-9fc.iam.gserviceaccount.com'
       - id: 'deploy'
-        uses: 'google-github-actions/deploy-cloud-functions@v4'
-        #Test
-        timeout-minutes: 3
-        with:
-          name: 'apicallgfu'
-          runtime: 'python312'
+        run: |
+          gcloud run deploy apicall \
+          --regions=europe-west1 \
+          --project=project-a7b5d84c-a964-4b71-9fc  \
+          --base-image python312 \
+          --source . \
+          --allow-unauthenticated
